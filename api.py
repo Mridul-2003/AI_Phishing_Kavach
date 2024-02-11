@@ -7,7 +7,7 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app,supports_credentials=True)
 
-model = pickle.load(open('/Users/useradmin/Desktop/AI_Phishing_Kavach/phishing.pkl','rb'))
+model = pickle.load(open('phishing.pkl','rb'))
 
 @app .route('/predict',methods=['POST'])
 def predict():
