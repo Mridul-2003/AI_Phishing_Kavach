@@ -8,11 +8,56 @@
         body {
             font-family: Arial, sans-serif;
             padding: 20px;
+            background-color: #f0f0f0;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        p {
+            color: #666;
+        }
+
+        .status {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .safe {
+            background-color: #8bc34a;
+            color: #fff;
+        }
+
+        .phishy {
+            background-color: #ff5722;
+            color: #fff;
         }
     </style>
 </head>
 <body>
     <h1>PhishGuard</h1>
     <p>Click on a link to check its safety status.</p>
+    <div class="status" id="status">
+        <!-- This div will display the status message -->
+    </div>
+
+    <script>
+        // Assume the status message is received from the background script
+        var statusMessage = "This link is safe to visit.";
+        var isPhishy = false; // Set to true if the link is phishy
+
+        var statusDiv = document.getElementById("status");
+
+        // Update the content and class of the status div based on the status message
+        if (isPhishy) {
+            statusDiv.textContent = statusMessage;
+            statusDiv.classList.add("phishy");
+        } else {
+            statusDiv.textContent = statusMessage;
+            statusDiv.classList.add("safe");
+        }
+    </script>
 </body>
 </html>
