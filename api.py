@@ -11,7 +11,8 @@ CORS(app, supports_credentials=True)
 model = pickle.load(open('phishing.pkl', 'rb'))
 phishy_email = pickle.load(open('phishy_email.pkl','rb'))
 vectorizer_email = pickle.load(open('vectorizer_phishing-emails.pkl','rb'))
-
+phishy_text = pickle.load(open('phishy_text.pkl','rb'))
+vectorizer_text = pickle.load(open('phishy_text_vectorizer.pkl','rb'))
 @app.route('/predict_phishyurl', methods=['POST'])
 def predict_url():
     try:
@@ -56,6 +57,32 @@ def predict_email():
             predict_email.append(result)
 
         return jsonify({"predictions": predict_email})
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
+    
+
+@app.route('/predict_phishytext', methods=['POST'])
+def predict_text():
+    try:
+        text_data = request.get_json()
+        text = text_data.get('text', []) 
+
+        if not text:
+            raise ValueError("No 'text' key found in the input JSON.")
+
+        predict_text = []
+
+        for tex in text:
+            transformed_text1 = vectorizer_text.transform([tex]).toarray()  # Convert sparse matrix to dense array
+            prediction = phishy_text.predict(transformed_text1)
+            result = {
+                "email": tex,
+                "predicted": "This text is Bullying" if prediction[0] == 1 else "Safe Text"
+            }
+            predict_text.append(result)
+
+        return jsonify({"predictions": predict_text})
 
     except Exception as e:
         return jsonify({"error": str(e)}), 400
