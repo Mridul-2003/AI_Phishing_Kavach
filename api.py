@@ -52,7 +52,7 @@ def predict_email():
             prediction = phishy_email.predict(transformed_text)
             result = {
                 "email": email,
-                "predicted": "This Email is Phishy" if prediction[0] == 0 else "Safe Email"
+                "predicted": "This Email is Phishy" if prediction[0] == 1 else "Safe Email"
             }
             predict_email.append(result)
 

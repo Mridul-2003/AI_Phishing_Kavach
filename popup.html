@@ -43,7 +43,21 @@
         <!-- This div will display the status message -->
     </div>
     <button id="activeButton">Active</button>
+    <h1>Predict Cyber Bullying</h1>
 
+    <form method="POST" action="/predict_phishytext">
+        <label for="text">Enter the text:</label><br>
+        <textarea name="text" id="text" cols="30" rows="10"></textarea> <br><br>
+        <button type="submit">Predict</button>
+        </form>
+        <p id="prediction-result"></p>
+    <h1>Predict Phishy Emails</h1>
+    <form id = "phishy_email" method="POST" action="/predict_phishyemail">
+            <label for="email">Enter the email:</label><br>
+            <textarea name="email" id="email" cols="30" rows="10"></textarea> <br><br>
+            <button type="submit">Predict</button>
+        </form>
+        <p id="prediction-email"></p>
     <script src="popup.js"></script>
 </body>
 </html>

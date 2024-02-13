@@ -37,3 +37,56 @@ function checkURLFraud(url) {
         // Handle errors here
     });
 }
+const form = document.querySelector('form');
+const phishyemail_form = document.querySelector('#phishy_email')
+form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const inputUrl = document.getElementById('text').value;
+
+    try {
+        const response = await fetch('http://127.0.0.1:5000/predict_phishytext', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ text: [inputUrl] }),  // Sending an array even if it's just one URL
+        });
+
+        if (response.ok) {
+            const result = (await response.json()).predictions[0].predicted;
+            const resultDiv = document.getElementById('prediction-result');
+            resultDiv.innerText = JSON.stringify(result, null, 2);  // Display the predictions as JSON
+        } else {
+            console.error('Request failed:', response.status);
+        }
+    } catch (error) {
+        console.error('Request failed:', error);
+    }
+});
+
+phishyemail_form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const inputUrl = document.getElementById('email').value;
+
+    try {
+        const response = await fetch('http://127.0.0.1:5000/predict_phishyemail', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ emails: [inputUrl] }),  // Sending an array even if it's just one URL
+        });
+
+        if (response.ok) {
+            const result = (await response.json()).predictions[0].predicted;
+            const resultDiv = document.getElementById('prediction-email');
+            resultDiv.innerText = JSON.stringify(result, null, 2);  // Display the predictions as JSON
+        } else {
+            console.error('Request failed:', response.status);
+        }
+    } catch (error) {
+        console.error('Request failed:', error);
+    }
+});
