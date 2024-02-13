@@ -4,14 +4,17 @@
   "version": "1.0",
   "description": "Protects users from clicking on fraudulent URLs",
   "permissions": [
+    "storage",
     "activeTab",
     "tabs",
+    "scripting",
     "http://127.0.0.1:5000" 
   ],
   "background": {
     "scripts": ["background.js"],
     "persistent": false
   },
+  "website_page": "website.html",
   "content_scripts": [
     {
       "matches": ["<all_urls>"],

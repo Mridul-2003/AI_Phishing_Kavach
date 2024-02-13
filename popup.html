@@ -3,19 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PhishGuard</title>
+    <title>PhishBlocker+</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             padding: 20px;
-            background-color: #f0f0f0;
+            background-color: black;
+            border-radius: 10%;
         }
 
         h1 {
-            color: #333;
+    
+            color: transparent;
+            background: linear-gradient(to right, rgb(241, 158, 5), rgb(255, 208, 0), rgb(255, 128, 0));
+            -webkit-background-clip: text;
+            font-size: 25px;
+            /* Ensure text is horizontally centered */
+            text-align: center;
+            margin: 10px;
         }
-
         p {
+            font-size: 15px;
+
             color: #666;
         }
 
@@ -24,40 +33,111 @@
             padding: 10px;
             border-radius: 5px;
         }
-
-        .safe {
-            background-color: #8bc34a;
-            color: #fff;
+        #activeButton {
+            font-size: 17px;
+            color: #ff5722;
+            font-weight: 400;
+            margin-left: 30%;
+            padding: 13px;
+            border-radius: 35px;
+            cursor: pointer;
+            border: 3px solid rgb(255, 201, 8);
+            padding: 7px 15px 7px 15px;
+        }
+        nav {
+            position: fixed;
+            display: none;
+            top: 0;
+            right: 0;
+            height: 100vh;
+            width: 200px; /* Set your desired width */
+            z-index: 999;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: flex-start;
+            backdrop-filter: blur(10px);
+            background-color: rgba(255, 255, 255, 0.427);
+            box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.1);
         }
 
-        .phishy {
-            background-color: #ff5722;
-            color: #fff;
+        nav ul {
+            width: 100%;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 0;
+            margin: 0;
         }
+
+        nav li {
+            height: 50px;
+            width: 100%;
+        }
+
+        nav a {
+            height: 100%;
+            padding: 0 30px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            color: aliceblue;
+        }
+        form textarea {
+            height: 40px;
+
+        }
+
     </style>
 </head>
 <body>
     <h1>PhishGuard</h1>
-    <p>Click on a link to check its safety status.</p>
+    <p>Click on "Check" button to check its safety status.</p>
     <div class="status" id="status">
         <!-- This div will display the status message -->
     </div>
-    <button id="activeButton">Active</button>
+    <button id="activeButton">Check</button>
+    <br>
+    <hr>
+    <!-- <nav>
+        <ul class="sidebar">
+            <li><a href="#"></a>Check links</li>
+            <li><a href="#"></a>Predict Phishy Emails</li>
+            <li><a href="#"></a>Predict Cyber Bullying</li>
+            <li onclick="showMenu()">
+                <a href="#">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+                        <path d="M0 0h24v24H0V0z" fill="none"/>
+                        <path d="M12 2L2 7l10 5 10-5-10-5zm0 10.9L3.71 8.6 12 13.3l8.29-4.7L12 12.9z"/>
+                    </svg>
+                </a>
+            </li>
+            
+        </ul>
+    </nav> -->
     <h1>Predict Cyber Bullying</h1>
 
     <form method="POST" action="/predict_phishytext">
         <label for="text">Enter the text:</label><br>
-        <textarea name="text" id="text" cols="30" rows="10"></textarea> <br><br>
-        <button type="submit">Predict</button>
+        <textarea  name="text" id="text" text="write here" cols="30" rows="10">Bullying text...</textarea> <br><br>
+        <button type="submit" id="activeButton">Predict</button>
         </form>
         <p id="prediction-result"></p>
+        <hr>
     <h1>Predict Phishy Emails</h1>
     <form id = "phishy_email" method="POST" action="/predict_phishyemail">
             <label for="email">Enter the email:</label><br>
-            <textarea name="email" id="email" cols="30" rows="10"></textarea> <br><br>
-            <button type="submit">Predict</button>
+            <textarea name="email" id="email" cols="30" rows="10">Write the email...</textarea> <br><br>
+            <button type="submit" id="activeButton">Predict</button>
         </form>
         <p id="prediction-email"></p>
+    <script>
+        function showMenu() {
+            var nav = document.querySelector('nav');
+            nav.style.display = 'block';
+        }
+    </script>
     <script src="popup.js"></script>
 </body>
 </html>

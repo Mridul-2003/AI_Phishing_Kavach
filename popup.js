@@ -1,5 +1,6 @@
 const btn = document.querySelector('#activeButton');
 
+
 btn.addEventListener('click', function() {
     chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
         let tab = tabs[0];
@@ -10,6 +11,7 @@ btn.addEventListener('click', function() {
         checkURLFraud(url);
     });
 });
+
 
 function checkURLFraud(url) {
     // Replace 'YOUR_API_ENDPOINT' with the actual endpoint of your API
