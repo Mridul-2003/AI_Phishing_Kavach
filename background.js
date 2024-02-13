@@ -1,5 +1,3 @@
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-    if (request.message === "activate_extension") {
-        chrome.tabs.executeScript(null, {file: "content.js"});
-    }
+document.addEventListener('mousemove', function(event) {
+    console.log('Mouse movement on webpage - X:', event.clientX, 'Y:', event.clientY);
 });

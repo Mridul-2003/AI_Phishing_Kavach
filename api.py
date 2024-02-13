@@ -17,10 +17,10 @@ vectorizer_text = pickle.load(open('phishy_text_vectorizer.pkl','rb'))
 def predict_url():
     try:
         data = request.get_json()
-        urls = data.get('urls', []) 
+        urls = data.get('url', []) 
 
         if not urls:
-            raise ValueError("No 'urls' key found in the input JSON.")
+            raise ValueError("No 'url' key found in the input JSON.")
 
         predictions = []
 
