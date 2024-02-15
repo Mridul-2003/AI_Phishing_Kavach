@@ -18,3 +18,11 @@ document.addEventListener('mouseover', function(event) {
         .catch(error => console.error('Error:', error));
     }
 });
+
+function extractTextFromPage() {
+    const textContent = document.body.innerText;
+    return textContent.trim();
+  }
+  
+  // Send a message to the extension with the extracted text
+  chrome.runtime.sendMessage({ action: "extractText", text: extractTextFromPage() });

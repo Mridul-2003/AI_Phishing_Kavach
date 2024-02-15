@@ -92,3 +92,58 @@ phishyemail_form.addEventListener('submit', async (event) => {
         console.error('Request failed:', error);
     }
 });
+
+// popup.js
+
+document.addEventListener('DOMContentLoaded', function() {
+    const cyberbullyingPredictionButton = document.getElementById('cyberbullyingPredictionButton');
+    const predictionList = document.getElementById('prediction-list');
+
+    cyberbullyingPredictionButton.addEventListener('click', function() {
+        chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+            const tab = tabs[0];
+
+            // Execute content script to extract text content from the page
+            chrome.tabs.executeScript(tab.id, { file: 'content.js' }, function() {
+                // Handle the response from the content script
+                chrome.runtime.onMessage.addListener(function(message) {
+                    if (message.action === 'extractText') {
+                        const extractedText = message.text;
+                        console.log('Extracted Text:', extractedText);
+
+                        // Call your API to predict cyberbullying with the extracted text
+                        predictCyberbullying(extractedText);
+                    }
+                });
+            });
+        });
+    });
+
+    function predictCyberbullying(text) {
+        // Replace 'YOUR_API_ENDPOINT' with the actual endpoint of your API
+        const API_ENDPOINT = 'http://127.0.0.1:5000/predict_phishytext';
+
+        // Send a request to your API with the extracted text
+        fetch(API_ENDPOINT, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ text: [text] })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('API Response:', data);
+
+            // Access the predicted value from the response
+            const predictedValue = data.predictions[0].predicted;
+
+            // Display the prediction in the popup
+            predictionList.textContent = `Predicted Result: ${predictedValue}`;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // Handle errors here
+        });
+    }
+});
