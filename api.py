@@ -77,7 +77,7 @@ def predict_text():
             transformed_text1 = vectorizer_text.transform([tex]).toarray()  # Convert sparse matrix to dense array
             prediction = phishy_text.predict(transformed_text1)
             result = {
-                "email": tex,
+                "text": tex,
                 "predicted": "This text is Bullying" if prediction[0] == 1 else "Safe Text"
             }
             predict_text.append(result)
