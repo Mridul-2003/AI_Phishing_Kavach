@@ -1,0 +1,2 @@
+svm_emails.pkl filter=lfs diff=lfs merge=lfs -text
+Vectorizesvm.pkl filter=lfs diff=lfs merge=lfs -text
