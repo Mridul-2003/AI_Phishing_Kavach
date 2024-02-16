@@ -9,8 +9,8 @@ app = Flask(__name__)
 CORS(app, supports_credentials=True)
 
 model = pickle.load(open('phishing.pkl', 'rb'))
-phishy_email = pickle.load(open('phishy_email.pkl','rb'))
-vectorizer_email = pickle.load(open('vectorizer_phishing-emails.pkl','rb'))
+phishy_email = pickle.load(open('spam.pkl','rb'))
+vectorizer_email = pickle.load(open('spam_vectorizer.pkl','rb'))
 phishy_text = pickle.load(open('phishy_text.pkl','rb'))
 vectorizer_text = pickle.load(open('phishy_text_vectorizer.pkl','rb'))
 @app.route('/predict_phishyurl', methods=['POST'])
@@ -52,7 +52,7 @@ def predict_email():
             prediction = phishy_email.predict(transformed_text)
             result = {
                 "email": email,
-                "predicted": "This Email is Phishy" if prediction[0] == 0 else "Safe Email"
+                "predicted": "This Email is Spam" if prediction[0] == 1 else "Safe Email"
             }
             predict_email.append(result)
 
