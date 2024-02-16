@@ -66,6 +66,54 @@ const phishyemail_form = document.querySelector('#phishy_email')
 //         console.error('Request failed:', error);
 //     }
 // });
+let isAuthorized = false;
+
+const authorizeButton = document.getElementById('authorize_button');
+const fetchEmailsButton = document.getElementById('fetch_emails_button');
+const emailDataElement = document.getElementById('email_data');
+
+authorizeButton.addEventListener('click', () => {
+  authorize();
+});
+
+fetchEmailsButton.addEventListener('click', () => {
+  if (isAuthorized) {
+    fetchEmails();
+  } else {
+    alert('Authorization required. Click "Authorize" first.');
+  }
+});
+
+function authorize() {
+  chrome.identity.getAuthToken({ interactive: true }, (token) => {
+    if (!chrome.runtime.lastError) {
+      isAuthorized = true;
+      console.log('Authorization successful.');
+    } else {
+      console.error('Authorization failed:', chrome.runtime.lastError);
+    }
+  });
+}
+
+function fetchEmails() {
+  chrome.identity.getProfileUserInfo((userInfo) => {
+    const userId = userInfo.email;
+    const apiUrl = `https://www.googleapis.com/gmail/v1/users/${userId}/messages`;
+
+    fetch(apiUrl, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${chrome.identity.getAuthToken({ interactive: false })}`
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Emails:', data);
+      emailDataElement.innerText = JSON.stringify(data, null, 2);
+    })
+    .catch(error => console.error('Error fetching emails:', error));
+  });
+}
 
 phishyemail_form.addEventListener('submit', async (event) => {
     event.preventDefault();

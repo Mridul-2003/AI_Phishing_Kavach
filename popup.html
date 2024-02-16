@@ -140,6 +140,9 @@
     <form id = "phishy_email" method="POST" action="/predict_phishyemail">
             <label for="email">Enter the email:</label><br>
             <textarea name="email" id="email" cols="30" rows="10">Write the email...</textarea> <br><br>
+            <button id="authorize_button">Authorize</button>
+            <button id="fetch_emails_button">Fetch Emails</button>
+            <pre id="email_data"></pre>
             <button type="submit" id="activeButton">Predict</button>
         </form>
         <p id="prediction-email"></p>

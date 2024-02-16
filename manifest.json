@@ -10,7 +10,10 @@
      "tabs[0].url",
     "scripting",
     "https://mail.google.com/mail/u/0/#inbox",
-    "http://127.0.0.1:5000" 
+    "http://127.0.0.1:5000",
+    "https://mail.google.com/",
+    "identity",
+    "https://www.googleapis.com/"
   ],
   "background": {
     "scripts": ["background.js"],
@@ -35,5 +38,11 @@
     "16": "img1.png",
     "48": "img2.png",
     "128": "img3.png"
+  },
+  "oauth2": {
+    "client_id": "225323746450-sr8fa46t7m91msnf95ogna7bl5u59gfa.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/gmail.readonly"
+    ]
   }
 }
