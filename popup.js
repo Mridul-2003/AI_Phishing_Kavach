@@ -96,7 +96,7 @@ phishyemail_form.addEventListener('submit', async (event) => {
 // popup.js
 
 document.addEventListener('DOMContentLoaded', function() {
-    const cyberbullyingPredictionButton = document.getElementById('cyberbullyingPredictionButton');
+    const cyberbullyingPredictionButton = document.getElementById('activeButton');
     const predictionList = document.getElementById('prediction-list');
 
     cyberbullyingPredictionButton.addEventListener('click', function() {
