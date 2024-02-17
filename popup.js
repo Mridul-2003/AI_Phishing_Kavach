@@ -40,67 +40,67 @@ function checkURLFraud(url) {
     });
 }
 const form = document.querySelector('form');
-const phishyemail_form = document.querySelector('#phishy_email')
-form.addEventListener('submit', async (event) => {
-    event.preventDefault();
+// const phishyemail_form = document.querySelector('#phishy_email')
+// form.addEventListener('submit', async (event) => {
+//     event.preventDefault();
 
-    const inputUrl = document.getElementById('text').value;
+//     const inputUrl = document.getElementById('text').value;
 
-    try {
-        const response = await fetch('http://127.0.0.1:5000/predict_phishytext', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ text: [inputUrl] }),  // Sending an array even if it's just one URL
-        });
+//     try {
+//         const response = await fetch('http://127.0.0.1:5000/predict_phishytext', {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//             },
+//             body: JSON.stringify({ text: [inputUrl] }),  // Sending an array even if it's just one URL
+//         });
 
-        if (response.ok) {
-            const result = (await response.json()).predictions[0].predicted;
-            const resultDiv = document.getElementById('prediction-result');
-            resultDiv.innerText = JSON.stringify(result, null, 2);  // Display the predictions as JSON
-        } else {
-            console.error('Request failed:', response.status);
-        }
-    } catch (error) {
-        console.error('Request failed:', error);
-    }
-});
-phishyemail_form.addEventListener('submit', async (event) => {
-    event.preventDefault();
-    // chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
-    //     let tab = tabs[0];
-    //     let url = tab.url; // Access the URL from the tab object
-    //     console.log('URL:', url);
-    //     console.log(tab)
-    // });
-    const inputUrl = document.getElementById('email').value;
-    // const urlParams = new URLSearchParams(tab.url);
-    // const emailParam = urlParams.get('email'); // Assuming 'email' is the parameter name
-    // console.log('Email from URL:', emailParam);
+//         if (response.ok) {
+//             const result = (await response.json()).predictions[0].predicted;
+//             const resultDiv = document.getElementById('prediction-result');
+//             resultDiv.innerText = JSON.stringify(result, null, 2);  // Display the predictions as JSON
+//         } else {
+//             console.error('Request failed:', response.status);
+//         }
+//     } catch (error) {
+//         console.error('Request failed:', error);
+//     }
+// });
+// phishyemail_form.addEventListener('submit', async (event) => {
+//     event.preventDefault();
+//     // chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+//     //     let tab = tabs[0];
+//     //     let url = tab.url; // Access the URL from the tab object
+//     //     console.log('URL:', url);
+//     //     console.log(tab)
+//     // });
+//     const inputUrl = document.getElementById('email').value;
+//     // const urlParams = new URLSearchParams(tab.url);
+//     // const emailParam = urlParams.get('email'); // Assuming 'email' is the parameter name
+//     // console.log('Email from URL:', emailParam);
 
-    console.log(inputUrl)
+//     console.log(inputUrl)
 
-    try {
-        const response = await fetch('http://127.0.0.1:5000/predict_phishyemail', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ emails: [inputUrl] }),  // Sending an array even if it's just one URL
-        });
+//     try {
+//         const response = await fetch('http://127.0.0.1:5000/predict_phishyemail', {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//             },
+//             body: JSON.stringify({ emails: [inputUrl] }),  // Sending an array even if it's just one URL
+//         });
 
-        if (response.ok) {
-            const result = (await response.json()).predictions[0].predicted;
-            const resultDiv = document.getElementById('prediction-email');
-            resultDiv.innerText = JSON.stringify(result, null, 2);  // Display the predictions as JSON
-        } else {
-            console.error('Request failed:', response.status);
-        }
-    } catch (error) {
-        console.error('Request failed:', error);
-    }
-});
+//         if (response.ok) {
+//             const result = (await response.json()).predictions[0].predicted;
+//             const resultDiv = document.getElementById('prediction-email');
+//             resultDiv.innerText = JSON.stringify(result, null, 2);  // Display the predictions as JSON
+//         } else {
+//             console.error('Request failed:', response.status);
+//         }
+//     } catch (error) {
+//         console.error('Request failed:', error);
+//     }
+// });
 
 // popup.js
 
@@ -122,6 +122,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                         // Call your API to predict cyberbullying with the extracted text
                         predictCyberbullying(extractedText);
+                        
                     }
                 });
             });
@@ -155,4 +156,58 @@ document.addEventListener('DOMContentLoaded', function() {
             // Handle errors here
         });
     }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const phishyEmailPredictionButton = document.getElementById('activeButton3');
+    const predictionEmailDiv = document.getElementById('prediction-email');
+
+    phishyEmailPredictionButton.addEventListener('click', function() {
+        chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
+            const tab = tabs[0];
+
+            // Execute content script to extract email content from the page
+            chrome.tabs.executeScript(tab.id, { file: 'email_content.js' }, function() {
+                // Handle the response from the content script
+                chrome.runtime.onMessage.addListener(function(message) {
+                    if (message.action === 'extractemail') {
+                        const emailContent = message.text;
+                        console.log('Extracted Text:', emailContent);
+
+                        // Call your API to predict phishing with the extracted email content
+                        predictPhishingForEmail(emailContent);
+                    }
+                });
+            });
+        });
+    });
+
+    function predictPhishingForEmail(emailContent) {
+        // Replace 'YOUR_API_ENDPOINT' with the actual endpoint of your API
+        const API_ENDPOINT = 'http://127.0.0.1:5000/predict_phishyemail';
+
+        // Send a request to your API with the extracted email content
+        fetch(API_ENDPOINT, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ emails: [emailContent] })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('API Response:', data);
+
+            // Access the predicted value from the response
+            const predictedValue = data.predictions[0].predicted;
+
+            // Display the prediction in the popup
+            predictionEmailDiv.textContent = `Predicted Result: ${predictedValue}`;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            // Handle errors here
+        });
+    }
+
 });
